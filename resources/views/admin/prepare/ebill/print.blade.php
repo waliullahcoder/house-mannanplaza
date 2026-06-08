@@ -113,7 +113,7 @@
 
 .bottom-table{
     width:100%;
-    margin-top:8mm;
+    margin-top:0mm;
     font-size:15px;
     border-collapse:collapse;
 }
@@ -122,6 +122,15 @@
     text-align:center;
     font-size:17px;
     font-weight:700;
+    padding-top:18px;
+}
+
+.signature-img{
+    height:45px;
+    width:150px;
+    object-fit:contain;
+    display:block;
+    margin:0 auto -5px;
 }
 
 .signature-line{
@@ -165,19 +174,18 @@
     $waterBill    = isset($bill[1]) ? $bill[1]->Amount : 0;
 
     $serviceBill = 0;
-    if(isset($bill[2])){
-        foreach($bill[2] as $sb){
+    if(isset($sbills)){
+        foreach($sbills as $sb){
             $serviceBill += $sb->Amount;
         }
     }
 
-    $houseRent = $bill['tenant']->Rent
+    $houseRent = $bill['tenant']->Agg0ne
         ?? $bill['tenant']->rent
         ?? $bill['tenant']->HouseRent
         ?? 0;
 
     $grandTotal = $houseRent + $electricBill + $waterBill + $serviceBill;
-
     $payMonth = isset($bill[0])
         ? date('F, Y', strtotime($bill[0]->billing_month))
         : date('F, Y');
@@ -310,6 +318,7 @@
                 &nbsp; {{ date('h:i:s a') }}
             </td>
             <td style="width:35%;" class="signature">
+                <img class="signature-img" src="{{ asset('public/elite-admin/assets/images/signature.png') }}" alt="Signature">
                 <div class="signature-line"></div>
                 Authorize Signature
             </td>

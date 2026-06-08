@@ -56,10 +56,10 @@
                         <td>{{ $bill->position_holder->Floor }}</td>
                         <td>{{ $bill->position_holder->PositionNo }}</td>
                         <td>{{ $bill->utility->name }}</td>
-                        <td>{{ $bill->position_holder->Agg0ne }}</td>
+                        <td>{{ $bill->Amount }}</td>
                     </tr>
                     @php
-                    $total_rent += $bill->position_holder->Agg0ne;
+                    $total_rent += $bill->Amount;
                     @endphp
                 @endforeach
                 <tr>
