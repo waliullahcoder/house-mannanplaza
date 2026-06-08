@@ -105,6 +105,7 @@
                                 <thead>
                                     <tr>
                                         <th>Serial No</th>
+                                        <th>Code</th>
                                         <th>Month</th>
                                         <th>Year</th>
                                         <th>Unit</th>
@@ -121,6 +122,7 @@
                                     @foreach ($data->jamidari_list as $jamidari)
                                         <tr class="row_{{ $jamidari->SerialNo }}">
                                             <td>{{ $jamidari->SerialNo }}</td>
+                                            <td>{{ $jamidari->Client_Code }}</td>
                                             <td>{{ $jamidari->CMonth }}</td>
                                             <td>{{ $jamidari->CYear }}</td>
                                             <td>{{ @$jamidari->position_holder->Unit }}</td>

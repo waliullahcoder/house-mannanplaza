@@ -105,6 +105,7 @@
                                 <thead>
                                     <tr>
                                         <th>Serial No</th>
+                                        <th>Code</th>
                                         <th>Month</th>
                                         <th>Year</th>
                                         <th>Unit</th>
@@ -121,6 +122,7 @@
                                     @foreach ($data->ebill_list as $ebill)
                                         <tr class="row_{{ $ebill->SerialNo }}">
                                             <td>{{ $ebill->SerialNo }}</td>
+                                            <td>{{ $ebill->Client_Code }}</td>
                                             <td>{{ $ebill->CMonth }}</td>
                                             <td>{{ $ebill->CYear }}</td>
                                             <td>{{ $ebill->position_holder ? $ebill->position_holder->Unit : '' }}</td>

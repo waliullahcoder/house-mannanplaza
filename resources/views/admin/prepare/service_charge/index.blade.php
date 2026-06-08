@@ -109,6 +109,7 @@
                                 <thead>
                                     <tr>
                                         <th>Serial No</th>
+                                        <th>Code</th>
                                         <th>Month</th>
                                         <th>Year</th>
                                         <th>Unit</th>
@@ -125,6 +126,7 @@
                                     @foreach ($data->wbill_list as $wbill)
                                         <tr class="row_{{ $wbill->SerialNo }}">
                                             <td>{{ $wbill->SerialNo }}</td>
+                                            <td>{{ $wbill->Client_Code }}</td>
                                             <td>{{ $wbill->CMonth }}</td>
                                             <td>{{ $wbill->CYear }}</td>
                                             <td>
