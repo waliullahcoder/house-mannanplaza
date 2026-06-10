@@ -214,7 +214,7 @@ class WbillPrepareController extends Controller
             }
 
             // get ebill rates
-            $rate = SetupRates::where('type', 'ebill')->first()->rate;
+            $rate = SetupRates::where('type', 'wbill')->first()->rate;
 
             $data = [
                 'last_unit' => $last_unit,

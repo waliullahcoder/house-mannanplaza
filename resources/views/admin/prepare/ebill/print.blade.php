@@ -24,7 +24,7 @@
     color:#111;
     position:relative;
     overflow:hidden;
-    margin-top:10px;
+    margin-top:15px;
 }
 
 .copy-divider{
@@ -145,7 +145,8 @@
     .noprint{display:none!important}
     .bill-page{
         width:250mm;
-        padding:10mm 0 7mm 5mm;
+        /* padding:10mm 0 7mm 5mm; */
+        
         margin:0
     }
     .bill-page{
@@ -318,7 +319,7 @@
                 &nbsp; {{ date('h:i:s a') }}
             </td>
             <td style="width:35%;" class="signature">
-                <img class="signature-img" src="{{ asset('public/elite-admin/assets/images/signature.png') }}" alt="Signature">
+                <!-- <img class="signature-img" src="{{ asset('public/elite-admin/assets/images/signature.png') }}" alt="Signature"> -->
                 <div class="signature-line"></div>
                 Authorize Signature
             </td>
