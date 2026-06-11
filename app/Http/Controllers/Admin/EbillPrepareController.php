@@ -164,8 +164,8 @@ class EbillPrepareController extends Controller
         $serial_no = $this->generateSerialNo();
 
         $tenants = PositionInformation::where('status', 1)->select(['Code', 'Name'])->get();
-
-        return view('admin.prepare.ebill.add_individual', compact(['tenants', 'title', 'formLink', 'buttonName', 'serial_no']));
+        $rate = SetupRates::where('type', 'ebill')->first()->rate??0;
+        return view('admin.prepare.ebill.add_individual', compact(['tenants','rate', 'title', 'formLink', 'buttonName', 'serial_no']));
     }
 
     public function addReading(Request $request)

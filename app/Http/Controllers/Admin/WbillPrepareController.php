@@ -114,8 +114,8 @@ class WbillPrepareController extends Controller
         // $rents = RentCollection::all();
 
         $tenants = PositionInformation::where('status', 1)->select(['Code', 'Name'])->get();
-
-        return view('admin.prepare.wbill.add_individual', compact(['tenants', 'title', 'formLink', 'buttonName', 'serial_no']));
+        $rate = SetupRates::where('type', 'wbill')->first()->rate;
+        return view('admin.prepare.wbill.add_individual', compact(['tenants', 'rate','title', 'formLink', 'buttonName', 'serial_no']));
     }
 
     public function save(Request $request)
