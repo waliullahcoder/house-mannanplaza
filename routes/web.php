@@ -219,6 +219,7 @@ Route::prefix('admin')->group(function () {
             Route::get('get-tenant-info', 'Admin\JamidariPrepareController@getTenantInfo')->name('jamidari.tenant.info.get.ajax');
             Route::post('jamidari-prepare-delete-individual', 'Admin\JamidariPrepareController@deleteIndividual')->name('jamidari.prepare.delete.individual');
 
+            Route::post('/jamidari/update/{id}', 'Admin\JamidariPrepareController@updateIndividual')->name('jamidari.prepare.update');
 
             // EBill prepeare
             Route::get('ebill-prepare-index', 'Admin\EbillPrepareController@index')->name('ebill.prepare.index');
@@ -234,6 +235,7 @@ Route::prefix('admin')->group(function () {
             Route::get('get-ebill-info', 'Admin\EbillPrepareController@getEbillInfo')->name('ebill.info.get.ajax');
             Route::post('ebill-prepare-delete-individual', 'Admin\EbillPrepareController@deleteIndividual')->name('ebill.prepare.delete.individual');
 
+            Route::post('ebill-prepare-individual-update/{id}','Admin\EbillPrepareController@updateIndividual')->name('ebill.prepare.update.individual');
 
             // WBill prepeare
             Route::get('wbill-prepare-index', 'Admin\WbillPrepareController@index')->name('wbill.prepare.index');
@@ -244,6 +246,8 @@ Route::prefix('admin')->group(function () {
             Route::get('wbill-prepare-view/{id}', 'Admin\WbillPrepareController@view')->name('wbill.prepare.view');
             Route::post('wbill-prepare-delete', 'Admin\WbillPrepareController@delete')->name('wbill.prepare.delete');
             Route::get('get-wbill-info', 'Admin\WbillPrepareController@getWbillInfo')->name('wbill.info.get.ajax');
+
+            Route::post('wbill-prepare-individual-update/{id}','Admin\WbillPrepareController@updateIndividual')->name('wbill.prepare.update.individual');
 
             // service charge prepare
             Route::get('serviceCharge-prepare', 'Admin\ServiceChargePrepareController@index')->name('service.charge.prepare');

@@ -317,6 +317,39 @@ class EbillPrepareController extends Controller
         return redirect(route('ebill.prepare.index'))->with('msg', 'Successfully Added');
     }
 
+    public function updateIndividual(Request $request, $id)
+    {
+        $ebill = EbillCollection::findOrFail($id);
+
+        $exists = EbillCollection::where('id', '!=', $id)
+            ->where('CYear', $request->CYear)
+            ->where('CMonth', $request->CMonth)
+            ->where('Client_Code', $ebill->Client_Code)
+            ->first();
+
+        if ($exists) {
+            return back()->with('error', 'Already Added');
+        }
+
+        if ($request->old_reading > $request->new_reading) {
+            return back()->with('error', 'Last unit must be greater than or equal previous unit!');
+        }
+
+        $ebill->update([
+            'CMonth'         => $request->CMonth,
+            'CYear'          => $request->CYear,
+            'billing_month'  => date('Y-m-d', strtotime('01-' . $request->CMonth . '-' . $request->CYear)),
+            'Amount'         => $request->amount,
+            'PreviousUnit'   => $request->old_reading,
+            'LastUnit'       => $request->new_reading,
+            'UsesUnit'       => $request->new_reading - $request->old_reading,
+            'PaidDate'       => date('Y-m-d H:i:s', strtotime($request->paid_date)),
+            'UpdateBy'       => Auth::user()->name,
+        ]);
+
+        return back()->with('msg', 'Successfully Updated');
+    }
+
     public function view($id)
     {
         $title = "View Electric Bill";
