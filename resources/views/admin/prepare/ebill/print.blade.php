@@ -277,7 +277,7 @@
                     <tr>
                         <td class="label">Mobile</td>
                         <td class="colon">:</td>
-                        <td class="value">{{ $bill['tenant']->Mobile ?? $bill['tenant']->Phone ?? '' }}</td>
+                        <td class="value">{{$client->Mobile }}</td>
                     </tr>
                     <tr>
                         <td class="label">E.C Unit</td>

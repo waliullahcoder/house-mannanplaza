@@ -81,10 +81,16 @@ class EbillPrepareController extends Controller
         }
 
         // fetch Wbill
-        $wbills = WbillCollection::where('CMonth', $parameters[0]->CMonth)
-            ->where('CYear', $parameters[0]->CYear)
-            ->whereIn('Client_Code', $ids)->with(['position_holder'])
-            ->get();
+       $wbills = collect(); // default empty collection
+            if (!empty($parameters) && isset($parameters[0])) {
+
+                $wbills = WbillCollection::where('CMonth', $parameters[0]->CMonth)
+                    ->where('CYear', $parameters[0]->CYear)
+                    ->whereIn('Client_Code', $ids)
+                    ->with(['position_holder'])
+                    ->get();
+
+            }
 
         foreach ($wbills as $wbill) {
             $data->bills[$wbill->position_holder->Code][1] = $wbill;
