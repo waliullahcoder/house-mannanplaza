@@ -9,6 +9,26 @@
         <legend>Basic Information</legend>
         <div class="row mt-3">
 
+			<div class="col-md-4">
+            <label for="project">Projects</label>
+            <div class="form-group {{ $errors->has('project') ? ' has-danger' : '' }}">
+                <select class="form-control" name="project" id="project">
+                    <!-- @foreach ($data->projects as $project)
+                    <option value="{{ $project->name }}">{{ $project->name }}</option>
+                    @endforeach
+ -->
+					    @foreach ($data->projects as $project)
+                    <option value="{{ $project->name }}" @if ($data->position->Project == $project->name)
+                        selected
+                        @endif
+
+                        >{{ $project->name }}</option>
+                    @endforeach
+                </select>
+				
+            </div>
+        </div>
+
             <div class="col-md-4">
                 <label for="Code">Client Code</label>
                 <div class="form-group {{ $errors->has('Code') ? ' has-danger' : '' }}">

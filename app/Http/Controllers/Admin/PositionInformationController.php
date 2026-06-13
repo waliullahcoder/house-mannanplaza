@@ -175,9 +175,10 @@ class PositionInformationController extends Controller
             'position' => $position,
             'floors' => FloorSetup::select(['name'])->get(),
             'units' => UnitSetup::select(['name'])->get(),
+			'projects' => SetupProject::select(['name'])->get(),
         ];
 
-        return view('admin.position.edit', compact(['title', 'formLink', 'buttonName', 'data']));
+        return view('admin.position.edit', compact(['title','projects', 'formLink', 'buttonName', 'data']));
     }
 
     public function stampEdit($stampId)
@@ -257,6 +258,7 @@ class PositionInformationController extends Controller
             "Floor" => $request->Floor,
             "Unit" => $request->Unit,
             "PositionNo" => $request->PositionNo,
+			"Project" => $request->project,
             "PositionSize" => $request->PositionSize,
             "ebill_meter_no" => $request->ebillMeterno,
             "wbill_meter_no" => $request->wbillMeterno,

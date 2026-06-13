@@ -71,13 +71,13 @@ class EbillPrepareController extends Controller
         $ebills = EbillCollection::where('serialNo', $id)->whereIn('Client_Code', $ids)->with(['position_holder'])->get();
 
         foreach ($ebills as $ebill) {
-            $data->bills[$ebill->position_holder->Code][0] = $ebill;
+            // $data->bills[$ebill->position_holder->Code][0] = $ebill;
+           //dd($ebill);
+            // $data->bills[$ebill->position_holder->Code]['tenant'] = $ebill->position_holder;
+            // $data->bills[$ebill->position_holder->Code]['billCode'] = $ebill->CMonth . '-' . $ebill->CYear . '-' . $ebill->position_holder->ID;
 
-            $data->bills[$ebill->position_holder->Code]['tenant'] = $ebill->position_holder;
-            $data->bills[$ebill->position_holder->Code]['billCode'] = $ebill->CMonth . '-' . $ebill->CYear . '-' . $ebill->position_holder->ID;
-
-            $data->bills[$ebill->position_holder->Code]['month'] = $ebill->CMonth;
-            $data->bills[$ebill->position_holder->Code]['year'] = $ebill->CYear;
+            // $data->bills[$ebill->position_holder->Code]['month'] = $ebill->CMonth;
+            // $data->bills[$ebill->position_holder->Code]['year'] = $ebill->CYear;
         }
 
         // fetch Wbill
@@ -94,7 +94,9 @@ class EbillPrepareController extends Controller
         // $sbills = ServiceChargeCollection::where('CMonth', $parameters[0]->CMonth)
         //     ->where('CYear', $parameters[0]->CYear)->whereIn('Client_Code', $ids)->with(['position_holder'])->get();
         $sbills = ServiceChargeCollection::where('SerialNo', $id)->get();
-
+ 
+            $code="";
+           $clientname="";
         foreach ($sbills as $key => $sbill) {
             if (!is_null($sbill->position_holder)) {
                 $data->bills[$sbill->position_holder->Code][2] = [$sbill];
@@ -102,9 +104,15 @@ class EbillPrepareController extends Controller
                 $holder_code = PositionInformation::where('Code', $sbill->Client_Code)->first()->Code;
                 $data->bills[$holder_code][2] = [$sbill];
             }
+			$code= $sbill->Client_Code;
+			$clientname=PositionInformation::where('Code', $sbill->Client_Code)->first()->Name;
         }
 
-        return view('admin.prepare.ebill.print', compact(['title', 'sbills', 'searchFormLink', 'printFormLink', 'data']));
+		$client=PositionInformation::where('Code', $code)->first();
+		$electbill = EbillCollection::where('Client_Code', $code)->with(['position_holder'])->first();
+        $waterbill = WbillCollection::where('Client_Code', $code)->with(['position_holder'])->first();
+
+        return view('admin.prepare.ebill.print', compact(['title', 'sbills', 'code','client','clientname','electbill','waterbill', 'searchFormLink', 'printFormLink', 'data']));
     }
 
     public function add(Request $request)

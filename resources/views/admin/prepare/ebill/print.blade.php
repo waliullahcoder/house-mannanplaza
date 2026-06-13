@@ -161,6 +161,11 @@
         <div class="col-md-2 offset-md-10 text-right">
             <button class="btn btn-info" onclick="window.print()">Print</button>
         </div>
+		<div class="row">
+        <div class="col-md-2 offset-md-10 text-right">
+            <a  class="btn btn-info" href="{{route('service.charge.prepare')}}" style="padding-left:80%; font-weight:bold;font-decoration:none;font-size:28px">Back</a>
+        </div>
+    </div>
     </div>
 </div>
 
@@ -168,11 +173,11 @@
 
 @if(count($data->bills) > 0)
 
-@foreach($data->bills as $bill)
+@foreach(array_slice($data->bills, 0, 1) as $bill)
 
 @php
-    $electricBill = isset($bill[0]) ? $bill[0]->Amount : 0;
-    $waterBill    = isset($bill[1]) ? $bill[1]->Amount : 0;
+    $electricBill = isset($electbill) ? $electbill->Amount : 0;
+    $waterBill    = isset($waterbill) ? $waterbill->Amount : 0;
 
     $serviceBill = 0;
     if(isset($sbills)){
@@ -181,10 +186,7 @@
         }
     }
 
-    $houseRent = $bill['tenant']->Agg0ne
-        ?? $bill['tenant']->rent
-        ?? $bill['tenant']->HouseRent
-        ?? 0;
+    $houseRent = $client->Agg0ne ?? 0;
 
     $grandTotal = $houseRent + $electricBill + $waterBill + $serviceBill;
     $payMonth = isset($bill[0])
@@ -198,7 +200,7 @@
 
     <div class="bill-title">
         <h3>Rent & Utility Bill</h3>
-        <p>Project Name : {{ $data->project->name }}</p>
+        <p>Project Name : {{ $client->Project?? '-' }}</p>
         <p>Pay Circle : {{ $payMonth }}</p>
     </div>
 
@@ -208,17 +210,17 @@
 
     <table class="main-table">
         <tr>
-            <td style="width:55%; padding-right:8mm;">
+            <td style="width:50%; padding-right:8mm;">
                 <table class="info-table">
                     <tr>
                         <td class="label">House No</td>
                         <td class="colon">:</td>
-                        <td class="value">{{ $bill['tenant']->Unit ?? '' }}</td>
+                        <td class="value">{{ $client->Unit}}</td>
                     </tr>
                     <tr>
                         <td class="label">Client Name</td>
                         <td class="colon">:</td>
-                        <td class="value">{{ $bill['tenant']->Name ?? '' }}</td>
+                        <td class="value">{{ $clientname }}</td>
                     </tr>
                     <tr>
                         <td class="label">House Rent</td>
@@ -240,32 +242,32 @@
                 </table>
             </td>
 
-            <td style="width:20%; padding-right:7mm;">
+            <td style="width:25%; padding-right:7mm;">
                 <table class="info-table">
                     <tr>
                         <td class="label">Client Code</td>
                         <td class="colon">:</td>
-                        <td class="value">{{ $bill['tenant']->Code ?? '' }}</td>
+                        <td class="value">{{ $code }}</td>
                     </tr>
                     <tr>
                         <td class="label">E.P Unit</td>
                         <td class="colon">:</td>
-                        <td class="value">{{ isset($bill[0]) ? $bill[0]->PreviousUnit : 0 }}</td>
+                        <td class="value">{{ isset($electbill) ? $electbill->PreviousUnit : 0 }}</td>
                     </tr>
                     <tr>
                         <td class="label">Total Unit</td>
                         <td class="colon">:</td>
-                        <td class="value">{{ isset($bill[0]) ? $bill[0]->UsesUnit : 0 }}</td>
+                        <td class="value">{{ isset($electbill) ? $electbill->UsesUnit : 0 }}</td>
                     </tr>
                     <tr>
                         <td class="label">W.P Unit</td>
                         <td class="colon">:</td>
-                        <td class="value">{{ isset($bill[1]) ? $bill[1]->PreviousUnit : 0 }}</td>
+                        <td class="value">{{ isset($waterbill) ? $waterbill->PreviousUnit : 0 }}</td>
                     </tr>
                     <tr>
                         <td class="label">Total Unit</td>
                         <td class="colon">:</td>
-                        <td class="value">{{ isset($bill[1]) ? $bill[1]->UsesUnit : 0 }}</td>
+                        <td class="value">{{ isset($waterbill) ? $waterbill->UsesUnit : 0 }}</td>
                     </tr>
                 </table>
             </td>
@@ -280,7 +282,7 @@
                     <tr>
                         <td class="label">E.C Unit</td>
                         <td class="colon">:</td>
-                        <td class="value">{{ isset($bill[0]) ? $bill[0]->LastUnit : 0 }}</td>
+                        <td class="value">{{ isset($electbill) ? $electbill->LastUnit : 0 }}</td>
                     </tr>
                     <tr>
                         <td class="label">Bill Amount</td>
@@ -290,7 +292,7 @@
                     <tr>
                         <td class="label">W.C Unit</td>
                         <td class="colon">:</td>
-                        <td class="value">{{ isset($bill[1]) ? $bill[1]->LastUnit : 0 }}</td>
+                        <td class="value">{{ isset($waterbill) ? $waterbill->LastUnit : 0 }}</td>
                     </tr>
                     <tr>
                         <td class="label">Bill Amount</td>

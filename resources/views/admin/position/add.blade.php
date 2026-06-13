@@ -6,7 +6,7 @@
     <fieldset>
         <div class="row">
             <legend>Basic Information</legend>
-             <div class="col-md-4">
+         <div class="col-md-4">
             <label for="project">Projects</label>
             <div class="form-group {{ $errors->has('project') ? ' has-danger' : '' }}">
                 <select class="form-control" name="project" id="project">
