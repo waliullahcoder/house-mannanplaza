@@ -178,7 +178,7 @@ class PositionInformationController extends Controller
 			'projects' => SetupProject::select(['name'])->get(),
         ];
 
-        return view('admin.position.edit', compact(['title','projects', 'formLink', 'buttonName', 'data']));
+        return view('admin.position.edit', compact(['title','formLink', 'buttonName', 'data']));
     }
 
     public function stampEdit($stampId)
