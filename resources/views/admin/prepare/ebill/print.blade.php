@@ -180,9 +180,13 @@
     $waterBill    = isset($waterbill) ? $waterbill->Amount : 0;
 
     $serviceBill = 0;
+	$paymonth="-";
+	$payyear ="-";
     if(isset($sbills)){
         foreach($sbills as $sb){
             $serviceBill += $sb->Amount;
+	        $paymonth = $sb->CMonth;
+			$payyear = $sb->CYear;
         }
     }
 
@@ -201,7 +205,7 @@
     <div class="bill-title">
         <h3>Rent & Utility Bill</h3>
         <p>Project Name : {{ $client->Project?? '-' }}</p>
-        <p>Pay Circle : {{ $payMonth }}</p>
+        <p>Pay Circle : {{ $paymonth }}-{{$payyear}}</p>
     </div>
 
     <div class="advance-text">
