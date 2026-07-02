@@ -242,7 +242,7 @@ class WbillPrepareController extends Controller
         if ($request->ajax()) {
 
             // fetch old reading
-            $last_unit = WbillCollection::where('Client_Code', $request->client_code)->orderBy('id', 'desc')->first();
+            $last_unit = WbillCollection::where('Client_Code', $request->client_code)->orderBy('id', 'desc')->first()->LastUnit;
 
             if ($last_unit == null) {
                 $last_unit = $last_unit['LastUnit'] = 0;
