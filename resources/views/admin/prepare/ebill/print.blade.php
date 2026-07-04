@@ -182,11 +182,13 @@
     $serviceBill = 0;
 	$paymonth="-";
 	$payyear ="-";
+    $billing_month ="-";
     if(isset($sbills)){
         foreach($sbills as $sb){
             $serviceBill += $sb->Amount;
 	        $paymonth = $sb->CMonth;
 			$payyear = $sb->CYear;
+            $billing_month = $sb->billing_month;
         }
     }
 
@@ -209,7 +211,7 @@
     </div>
 
     <div class="advance-text">
-        Monthly Deduct from Advance : 0.00
+      Prepared By: Admin, Prepared Date: {{ date('d-F-Y', strtotime($billing_month)) }}
     </div>
 
     <table class="main-table">
