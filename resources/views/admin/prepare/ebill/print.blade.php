@@ -176,8 +176,7 @@
 @foreach(array_slice($data->bills, 0, 1) as $bill)
 
 @php
-    $electricBill = isset($electbill) ? $electbill->Amount : 0;
-    $waterBill    = isset($waterbill) ? $waterbill->Amount : 0;
+
 
     $serviceBill = 0;
 	$paymonth="-";
@@ -191,13 +190,21 @@
             $billing_month = $sb->billing_month;
         }
     }
+    $payMonth = isset($bill[0])
+        ? date('F, Y', strtotime($bill[0]->billing_month))
+        : date('F, Y');
+
+    $electbill = App\EbillCollection::where('Client_Code',$code)->where('CMonth',$paymonth)->where('CYear',$payyear)->first();
+    $waterbill = App\WbillCollection::where('Client_Code',$code)->where('CMonth',$paymonth)->where('CYear',$payyear)->first();
+
+    $electricBill = isset($electbill) ? $electbill->Amount : 0;
+    $waterBill    = isset($waterbill) ? $waterbill->Amount : 0;
 
     $houseRent = $client->Agg0ne ?? 0;
 
     $grandTotal = $houseRent + $electricBill + $waterBill + $serviceBill;
-    $payMonth = isset($bill[0])
-        ? date('F, Y', strtotime($bill[0]->billing_month))
-        : date('F, Y');
+  
+
 @endphp
 
 @foreach($data->copies as $copy)

@@ -20,7 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `kassafco_mannanplazahouse`
 --
-
+use `house_mannan_live`;
 -- --------------------------------------------------------
 
 --
@@ -591,7 +591,7 @@ CREATE TABLE `password_resets` (
 
 CREATE TABLE `saleposition` (
   `ID` int(11) NOT NULL,
-  `Code` text NOT NULL,
+  `Code` varchar(255) DEFAULT NULL,
   `Name` text DEFAULT NULL,
   `FName` text DEFAULT NULL,
   `MName` text DEFAULT NULL,
@@ -1124,7 +1124,7 @@ INSERT INTO `tbl_setup_floor` (`id`, `code`, `name`, `status`, `created_by`, `cr
 
 CREATE TABLE `tbl_setup_project` (
   `id` int(11) NOT NULL,
-  `code` text NOT NULL,
+  `code` varchar(255) DEFAULT NULL,
   `name` text NOT NULL,
   `ebill_rate` double NOT NULL,
   `wbill_rate` double NOT NULL,
