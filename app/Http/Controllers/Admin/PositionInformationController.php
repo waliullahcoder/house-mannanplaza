@@ -17,17 +17,32 @@ use Illuminate\Support\Facades\Auth;
 
 class PositionInformationController extends Controller
 {
-    public function index()
+  public function index(Request $request)
     {
         $title = "Position Informations";
 
-        $positions = PositionInformation::select(['id', 'Code', 'Name', 'Mobile', 'Unit', 'Floor', 'PositionNo', 'status'])
-        ->orderBy('Unit')
-        ->orderBy('Floor')
-        ->orderBy('PositionNo')
-        ->get();
+        $query = PositionInformation::select([
+            'id',
+            'Code',
+            'Name',
+            'Mobile',
+            'Unit',
+            'Floor',
+            'PositionNo',
+            'EntryReson',
+            'status'
+        ]);
 
-        return view('admin.position.index', compact(['title', 'positions']));
+        if ($request->filled('type')) {
+            $query->where('EntryReson', $request->type);
+        }
+
+        $positions = $query->orderBy('Unit')
+            ->orderBy('Floor')
+            ->orderBy('PositionNo')
+            ->get();
+
+        return view('admin.position.index', compact('title', 'positions'));
     }
 
     public function stampIndex($tenantId)
@@ -91,6 +106,7 @@ class PositionInformationController extends Controller
             "NationalID" => $request->NationalID,
             "PassportNo" => $request->PassportNo,
             "EntryReson" => $request->EntryReason,
+            "original_dolil_no" => $request->original_dolil_no,
             "Floor" => $request->Floor,
             "Unit" => $request->Unit,
             'address' => $request->address,
@@ -258,6 +274,7 @@ class PositionInformationController extends Controller
             "Floor" => $request->Floor,
             "Unit" => $request->Unit,
             "PositionNo" => $request->PositionNo,
+            "original_dolil_no" => $request->original_dolil_no,
 			"Project" => $request->project,
             "PositionSize" => $request->PositionSize,
             "ebill_meter_no" => $request->ebillMeterno,

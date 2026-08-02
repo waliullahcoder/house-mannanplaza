@@ -1,77 +1,113 @@
 @extends('admin.layouts.masterAddEdit')
 
 @section('card_body')
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-5">
-                <label for="amount">Amount</label>
-                <div class="form-group {{ $errors->has('amount') ? ' has-danger' : '' }}">
-                    <input type="text" class="form-control" placeholder="Amount" id="amount" name="amount" value="{{ old('amount') }}">
-                    @if ($errors->has('amount'))
-                        @foreach($errors->get('amount') as $error)
-                            <div class="form-control-feedback">{{ $error }}</div>
-                        @endforeach
-                    @endif
-                </div>
-            </div>
+<div class="card-body">
 
-            <div class="col-md-5">
-                <label for="discount">Discount</label>
-                <div class="form-group {{ $errors->has('discount') ? ' has-danger' : '' }}">
-                    <input type="text" class="form-control" placeholder="Discount" id="discount" name="discount" value="{{ old('discount') }}">
-                    @if ($errors->has('discount'))
-                        @foreach($errors->get('discount') as $error)
-                            <div class="form-control-feedback">{{ $error }}</div>
-                        @endforeach
-                    @endif
-                </div>
-            </div>
+    <div class="row">
 
-            <div class="col-md-2">
-                <label for=""></label>
-                <div class="form-group {{ $errors->has('discount') ? ' has-danger' : '' }}">
-                    <input type="button" class="btn btn-outline-info btn-md" name="buttonAddEdit" onclick="getProductPrice()" value="view">
-                </div>
+        <div class="col-md-6">
+            <label>Project Code <span class="text-danger">*</span></label>
+            <div class="form-group">
+                <input type="text"
+                       class="form-control @error('code') is-invalid @enderror"
+                       name="code"
+                       placeholder="Project Code"
+                       value="{{ old('code') }}">
+
+                @error('code')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <label for="product-price">Product Price</label>
-                <div class="form-group {{ $errors->has('productPrice') ? ' has-danger' : '' }}">
-                    <input type="text" class="form-control" placeholder="Amount" id="productPrice" name="productPrice" value="{{ old('productPrice') }}">
-                    @if ($errors->has('productPrice'))
-                        @foreach($errors->get('productPrice') as $error)
-                            <div class="form-control-feedback">{{ $error }}</div>
-                        @endforeach
-                    @endif
-                </div>
+        <div class="col-md-6">
+            <label>Project Name <span class="text-danger">*</span></label>
+            <div class="form-group">
+                <input type="text"
+                       class="form-control @error('name') is-invalid @enderror"
+                       name="name"
+                       placeholder="Project Name"
+                       value="{{ old('name') }}">
+
+                @error('name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
         </div>
+
     </div>
-@endsection
 
-@section('custom-js')
-    <script type="text/javascript">
-        function getProductPrice()
-        {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
 
-            var amount = parseFloat($('#amount').val());
-            var discount = parseFloat($('#discount').val());
+    <div class="row">
 
-            $.ajax({
-                type:'post',
-                url:'{{ route('newProject.findProductPrice') }}',
-                data:{amount:amount,discount:discount},
-                success:function(data){
-                    $("#productPrice").val(data.productPrice);
-                }
-            });
-        }
-    </script>
+        <div class="col-md-6">
+            <label>Ebill Rate (Tk.)</label>
+            <div class="form-group">
+                <input type="number"
+                       step="0.01"
+                       class="form-control @error('ebill_rate') is-invalid @enderror"
+                       name="ebill_rate"
+                       placeholder="Enter Ebill Rate"
+                       value="{{ old('ebill_rate') }}">
+
+                @error('ebill_rate')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label>Wbill Rate (Tk.)</label>
+            <div class="form-group">
+                <input type="number"
+                       step="0.01"
+                       class="form-control @error('wbill_rate') is-invalid @enderror"
+                       name="wbill_rate"
+                       placeholder="Enter Wbill Rate"
+                       value="{{ old('wbill_rate') }}">
+
+                @error('wbill_rate')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <label>Contact</label>
+            <div class="form-group">
+                <input type="text"
+                       class="form-control @error('contact') is-invalid @enderror"
+                       name="contact"
+                       placeholder="Contact Number"
+                       value="{{ old('contact') }}">
+
+                @error('contact')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label>Address</label>
+            <div class="form-group">
+                <textarea
+                    class="form-control @error('address') is-invalid @enderror"
+                    name="address"
+                    rows="3"
+                    placeholder="Project Address">{{ old('address') }}</textarea>
+
+                @error('address')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+    </div>
+
+</div>
 @endsection

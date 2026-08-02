@@ -58,7 +58,7 @@ class HelperClass
         $logoExtension = $file->getClientOriginalExtension();
 
         if (!file_exists($directory)) {
-            mkdir($directory);
+            mkdir($directory, 0777, true);
         }
 
         $logoUrl = $directory . ($name . '_' . $maxId . '.' . $logoExtension);

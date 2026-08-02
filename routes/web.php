@@ -202,10 +202,7 @@ Route::prefix('admin')->group(function () {
             Route::post('/new-project-save', 'Admin\NewProjectController@save')->name('newProject.save');
             Route::get('/new-project-edit/{id}', 'Admin\NewProjectController@edit')->name('newProject.edit');
             Route::post('/new-project-update', 'Admin\NewProjectController@update')->name('newProject.update');
-            Route::post('/new-project-delete', 'Admin\NewProjectController@delete')->name('newProject.delete');
-            Route::post('/new-project-status', 'Admin\NewProjectController@status')->name('newProject.status');
-            Route::post('/new-project-find-product-price', 'Admin\NewProjectController@findProductPrice')->name('newProject.findProductPrice');
-
+           
             // jamidari prepeare
             Route::post('jamidari-prepare-search', 'Admin\JamidariPrepareController@search')->name('jamidari.prepare.search');
             Route::get('jamidari-prepare-index', 'Admin\JamidariPrepareController@index')->name('jamidari.prepare.index');
@@ -282,6 +279,8 @@ Route::prefix('admin')->group(function () {
             // collection reports
             Route::get('collection-report', 'Admin\CollectionReportController@CollectionReport')->name('collection.report');
             Route::get('collection-summary-report', 'Admin\CollectionReportController@CollectionSummaryReport')->name('collection.summary.report');
+
+            Route::get('report-summary', 'Admin\CollectionReportController@reportSummary')->name('report.summary');
 
             // due reports
             Route::get('jamidari-due-report', 'Admin\DueReportController@JamidariDueReport')->name('jamidari.due.report');

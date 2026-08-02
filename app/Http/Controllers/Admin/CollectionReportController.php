@@ -92,6 +92,63 @@ class CollectionReportController extends Controller
         return view('admin.collection_report.collection.collection', compact(['fromDate', 'toDate', 'title', 'sunit', 'sfloor', 'project', 'data', 'date', 'from_date', 'to_date', 'ClientWisebills', 'months']));
     }
 
+    public function reportSummary(Request $request)
+    {
+
+    //dd($request->all());
+          $title = "Report Summary";
+
+        $query = DB::table('saleposition as sp')
+            ->leftJoin('collection_rant as rent', 'rent.Client_Code', '=', 'sp.Code')
+            ->leftJoin('collection_ebill as eb', 'eb.Client_Code', '=', 'sp.Code')
+            ->leftJoin('collection_wbill as wb', 'wb.Client_Code', '=', 'sp.Code');
+
+        if ($request->filled('type')) {
+            $query->where('sp.EntryReson', $request->type);
+        }
+         
+        if ($request->filled('project')) {
+            $query->where('sp.Project', $request->project);
+        }
+        if ($request->filled('month')) {
+            $query->where('rent.CMonth', $request->month);
+            $query->where('eb.CMonth', $request->month);
+            $query->where('wb.CMonth', $request->month);
+        }
+
+        if ($request->filled('year')) {
+            $query->where('rent.CYear', $request->year);
+            $query->where('eb.CYear', $request->year);
+            $query->where('wb.CYear', $request->year);
+        }
+
+        $positions = $query
+            ->select(
+                'sp.Code',
+                'sp.Name',
+
+                DB::raw('SUM(DISTINCT rent.Amount) as jomidari'),
+                DB::raw('SUM(CASE WHEN rent.ReceiveDate IS NULL THEN rent.Amount ELSE 0 END) as jomidari_due'),
+
+                DB::raw('SUM(DISTINCT eb.Amount) as ebill'),
+                DB::raw('SUM(CASE WHEN eb.ReceiveDate IS NULL THEN eb.Amount ELSE 0 END) as ebill_due'),
+
+                DB::raw('SUM(DISTINCT wb.Amount) as wbill'),
+                DB::raw('SUM(CASE WHEN wb.ReceiveDate IS NULL THEN wb.Amount ELSE 0 END) as wbill_due')
+            )
+            ->groupBy('sp.Code', 'sp.Name')
+            ->orderBy('sp.Code')
+            ->get();
+
+        $projects = SetupProject::select(['name'])->get();
+
+        $sproject =$request->project ?? '';
+        $cmonth =$request->month ?? '';
+        $cyear =$request->year ?? '';
+
+        return view('admin.report.summary', compact('title', 'positions','projects','sproject','cmonth','cyear'));
+    }
+
     public function CollectionSummaryReport(Request $request)
     {
         $title = "Collection Demand Report";

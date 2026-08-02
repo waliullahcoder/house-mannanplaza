@@ -5,7 +5,22 @@
         {{-- <div align='center'>
             <font size='7' text-align='center' color='green' face='Comic sans MS'>This Page Is Now Under Construction</font>
         </div> --}}
+<div class="mb-3" style="margin:20px;">
+        <a href="{{ route('positionInformation.index') }}"
+        class="btn {{ request('type') == '' ? 'btn-primary' : 'btn-secondary' }}">
+            All
+        </a>
 
+        <a href="{{ route('positionInformation.index', ['type' => 'Sale']) }}"
+        class="btn {{ request('type') == 'Sale' ? 'btn-success' : 'btn-outline-success' }}">
+            Sale
+        </a>
+
+        <a href="{{ route('positionInformation.index', ['type' => 'Rent']) }}"
+        class="btn {{ request('type') == 'Rent' ? 'btn-info' : 'btn-outline-info' }}">
+            Rent
+        </a>
+    </div>
         <div class="table-responsive">
             @php
             $sl = 0;

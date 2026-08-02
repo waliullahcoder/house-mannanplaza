@@ -99,9 +99,16 @@
             </div>
 
             <div class="col-md-4">
-                <label for="timage">Tenant Image</label>
+                <label for="timage">Picture Upload</label>
                 <div class="form-group {{ $errors->has('tenant_image') ? ' has-danger' : '' }}">
                     <input type="file" class="form-control" placeholder="Tenant Image" name="tenant_image">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="original_dolil_no">Original Dolil No.</label>
+                <div class="form-group {{ $errors->has('original_dolil_no') ? ' has-danger' : '' }}">
+                    <input type="text" class="form-control" placeholder="Write Original Dolil No." name="original_dolil_no"
+                        value="{{ old('original_dolil_no') }}">
                 </div>
             </div>
 
