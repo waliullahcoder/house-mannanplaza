@@ -247,8 +247,8 @@
                         <th><b>{{ $positions->sum('wbill') }}</b></th>
                         <th><b>{{ $positions->sum('wbill_due') }}</b></th>
 
-                        <th><b>{{ $total_sbill }}</b></th>
-                        <th><b>{{ $total_sbill_due }}</b></th>
+                        <th><b>{{ $total_sbill??0 }}</b></th>
+                        <th><b>{{ $total_sbill_due??0 }}</b></th>
                     </tr>
                     </tfoot>
             </table>
