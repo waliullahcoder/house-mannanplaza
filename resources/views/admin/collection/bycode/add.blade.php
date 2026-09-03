@@ -5,6 +5,26 @@
         use Carbon\Carbon;
     @endphp
     <div id="app">
+         @if(!empty($message))
+            <div class="alert alert-warning alert-dismissible fade show noprint" role="alert">
+                <h5 class="alert-heading">
+                    <i class="fa fa-exclamation-triangle"></i>
+                   যে গুলো কালেকশন হয়নাই এখনও সে গুলো নিচের টেবিলে দেখুন কালেকশন করতে পারবেন। <br>
+                   (যদি টেবিলে না দেখতে পান তাহলে বুঝবেন নির্বাচন করা ফিল্টারের কোন বিলের ডাটা নেই। )<br><br>
+
+                   আপনার নির্বাচন করা কোড, মাস এবং বছরের রেকর্ড শেষ কালেকশন তথ্য এখানে(হলুদ অংশে) দেখুন। <br>
+
+                </h5>
+
+                <hr>
+
+                {!! $message !!}
+
+                <button type="button" class="close" data-dismiss="alert">
+                    <span>&times;</span>
+                </button>
+            </div>
+        @endif
         <form action="{{ route('collection.add.bycode') }}" method="GET">
             <input type="hidden" name="searched" value="true">
             <div class="card noprint">
@@ -16,22 +36,60 @@
                     </div>
                 </div>
 
-                <div class="card-body">
+               <div class="card-body">
                     <div class="row">
-                        <div class="col-md-2 text-right">
-                            <label for="search_code" class="mt-2">Find By Code</label>
-                        </div>
-                        <div class="col-md-10">
-                            <select class="form-control select2" name="search_code" id="search_code">
+
+                        <div class="col-md-4">
+                    <label>Find By Code</label>
+                    <select class="form-control select2" name="search_code" id="search_code">
                                 @foreach ($tenants as $tenant)
-                                    <option value="{{ $tenant->Code }}" @if ($search_code == $tenant->Code) selected @endif>
-                                        {{ $tenant->Code }} ({{ $tenant->Name }})</option>
+                                    <option value="{{ $tenant->Code }}"
+                                        {{ $search_code == $tenant->Code ? 'selected' : '' }}>
+                                        {{ $tenant->Code }} ({{ $tenant->Name }})
+                                    </option>
                                 @endforeach
                             </select>
+                     </div>
 
-                        </div>
+                         <div class="col-md-4">
+                    <label>Bill Month</label>
+                    <select class="form-control select2" name="bill_month" id="bill_month">
+                        <option value="all" {{ $cmonth == 'all' ? 'selected' : '' }}>
+                            All
+                        </option>
+
+                        @foreach([
+                            'January','February','March','April','May','June',
+                            'July','August','September','October','November','December'
+                        ] as $month)
+
+                            <option value="{{ $month }}"
+                                {{ $cmonth == $month ? 'selected' : '' }}>
+                                {{ $month }}
+                            </option>
+
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label>Year</label>
+                    <select class="form-control select2" name="bill_year" id="bill_year">
+                         <option value="all" {{ $cyear == 'all' ? 'selected' : '' }}>
+                                All
+                            </option>
+
+                            @for ($i = 2000; $i <= 2055; $i++)
+                                <option value="{{ $i }}"
+                                    {{ $cyear == $i ? 'selected' : '' }}>
+                                    {{ $i }}
+                                </option>
+                            @endfor
+                    </select>
+                </div>
                     </div>
                 </div>
+
 
                 <div class="custom-card-footer">
                     <div class="row text-right">
@@ -99,7 +157,7 @@
                                             value="{{ $bill->id }}" amount="{{ $bill->Amount }}">
                                         <input type="hidden" name="class_name[{{ $bill->id }}]"
                                             value="{{ $bill->CLASS_NAME }}">
-                                       
+                                        <input type="hidden" name="collection_by" value="{{ Auth::user()->name }}">
                                     </td>
                                 </tr>
                             @endforeach

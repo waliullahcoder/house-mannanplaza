@@ -2,6 +2,40 @@
 
 @section('content')
 
+<!-- Project section -->
+<form action="{{ route('jamidari.prepare.add.individual') }}" method="GET">
+    @csrf
+
+    <div class="card noprint">
+        <div class="card-body">
+
+            <div class="row">
+
+
+                <div class="col-md-4">
+                    <select class="form-control select2" name="project" id="project">
+                        <option value="">Select Project</option>
+
+                        @foreach($projects as $project)
+                        <option value="{{ $project->name }}" {{ $projectname == $project->name ? 'selected' : '' }}>
+                            {{ $project->code }} ({{ $project->name }})
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-3 offset-md-4">
+                    <button type="submit" class="btn btn-outline-info btn-lg buttonAddEdit float-right">
+                        Search
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<!-- Project section end-->
+
     <form action="{{ route($formLink) }}" method="POST">
         @csrf
 

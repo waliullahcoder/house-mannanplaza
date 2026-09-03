@@ -32,14 +32,48 @@ class CollectionController extends Controller
     {
         $title = "Bill Collection by code";
         $bills = [];
+        $message=[];
         $search_code = '';
 
         $classToNormal = $this->classNamesToText;
+        $cmonth = $request->bill_month??'';
+        $cyear = $request->bill_year??'';
 
         if ($request->searched) {
             $search_code = $request->search_code;
             foreach ($this->services as $key => $class) {
                 $service_class = new $class();
+                // Already Received / Collected Bills
+                        $received_bills = $class::where('Client_Code', $search_code);
+                         if($cmonth !='all'){
+                           $received_bills->where('CMonth',$cmonth);
+                       }
+                        if($cyear !='all'){
+                           $received_bills->where('CYear',$cyear);
+                       }
+                          $received_bill = $received_bills
+                            ->whereNotNull('ReceiveDate')
+                            ->where('ReceiveDate', '>=', '2010-01-01 00:00:00')
+                            ->where('Amount', '>', 0)
+                            ->first();
+                        if ($received_bill) {
+                                $message = '<div class="mb-2">
+                                    <strong>' .
+                                    ($classToNormal[$class] ?? class_basename($class)) .
+                                    '</strong><br>
+                                    Receive Date: <strong>' .
+                                    Carbon::parse($received_bill->ReceiveDate)->format('d-m-Y h:i A') .
+                                    '</strong><br>
+                                    Collection By: <strong>' .
+                                    ($received_bill->collection_by ??'N/A') .
+                                    '</strong><br>
+
+                                    Collection Month and Year: <strong>' .
+                                    ($cmonth ??'N/A') .'-'. ($cyear ??'N/A').
+                                    '</strong>
+
+                                    </div>';
+                            }
                 $service_pending_bills = $service_class::where('Client_Code', $search_code)
                     ->where(function ($q) {
                         $q->orWhereNull('ReceiveDate')
@@ -57,21 +91,24 @@ class CollectionController extends Controller
 
         $tenants = PositionInformation::where('status', 1)->select(['Code', 'Name'])->get();
 
-        return view('admin.collection.bycode.add', compact(['title', 'bills', 'classToNormal', 'search_code', 'tenants']));
+        return view('admin.collection.bycode.add', compact(['title', 'bills', 'classToNormal', 'search_code','message', 'cmonth','cyear','tenants']));
     }
+
+   
 
     public function savebyCode(Request $request)
     {
         if (!$request->ids) {
             return back()->with('error', 'Please check boxes to continue');
         }
-
+        $receive_date = $request->receive_date ? Carbon::createFromFormat('d-m-Y', $request->receive_date)->format('Y-m-d') : date('Y-m-d H:i:s');
         foreach ($request->ids as $id) {
             $service_class = new $request->class_name[$id]();
             $this_service_row = $service_class::findOrFail($id);
 
             $this_service_row->update([
-                'ReceiveDate' => date('Y-m-d h:i:s'),
+               'ReceiveDate' => $receive_date,
+                'collection_by' => $request->collection_by ? $request->collection_by : 'Admin'
             ]);
 
             $now = date('Y-m-d');

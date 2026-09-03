@@ -55,21 +55,31 @@ class JamidariPrepareController extends Controller
         return view('admin.prepare.jamidari.add', compact(['title', 'searchFormLink', 'printFormLink', 'data', 'tenants']));
     }
 
-    public function addindividual()
+    public function addindividual(Request $request)
     {
         $title = "Prepare Jamidari Charge Individual";
         $formLink = "jamidari.prepare.save.individual";
         $buttonName = "Auto Jamiradi Posting";
         $serial_no = $this->generateSerialNo();
 
+        //Project
+        $projects=  SetupProject::select(['code', 'name'])->get()??[];
+        $projectname=$request->project??"";
+        $tenants = PositionInformation::where('status', 1);
+            if($projectname){
+                $tenants->where('Project', $projectname);
+            }
+           $tenants = $tenants->select(['Code', 'Name'])
+            ->orderBy('Code')
+            ->get();
+        //end project
 
-        $tenants = PositionInformation::where('status', 1)->select(['Code', 'Name'])->get();
-
-        return view('admin.prepare.jamidari.add_individual', compact(['tenants', 'title', 'formLink', 'buttonName', 'serial_no']));
+        return view('admin.prepare.jamidari.add_individual', compact(['tenants','projects','projectname', 'title', 'formLink', 'buttonName', 'serial_no']));
     }
 
     public function saveIndividual(Request $request)
     {
+        
 
         $client = PositionInformation::where('Code',  $request->client_code)->first();
 

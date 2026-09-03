@@ -1,6 +1,41 @@
 @extends('admin.layouts.master')
 
 @section('content')
+
+<!-- Project section -->
+<form action="{{ route('jamidari.prepare.add.individual') }}" method="GET">
+    @csrf
+
+    <div class="card noprint">
+        <div class="card-body">
+
+            <div class="row">
+
+
+                <div class="col-md-4">
+                    <select class="form-control select2" name="project" id="project">
+                        <option value="">Select Project</option>
+
+                        @foreach($projects as $project)
+                        <option value="{{ $project->name }}" {{ $projectname == $project->name ? 'selected' : '' }}>
+                            {{ $project->code }} ({{ $project->name }})
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-3 offset-md-4">
+                    <button type="submit" class="btn btn-outline-info btn-lg buttonAddEdit float-right">
+                        Search
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<!-- Project section end-->
+@if($project)
 <form action="{{ route($formLink) }}" method="POST">
     @csrf
 
@@ -17,6 +52,7 @@
         <div class="card-body">
 
             <div class="row">
+
                 <div class="col-md-4">
                     <label for="Client_Code">Client Code</label>
                     <select class="form-control select2" name="client_code" id="search_code">
@@ -49,9 +85,8 @@
                 <div class="col-md-4">
                     <label for="year">Year</label>
                     <select class="form-control select2" id="CYear" name="CYear">
-                         <option value="2026" selected>2026</option>
-                                @for ($i = 2000; $i <= 2055; $i++)
-							<option value="{{ $i }}">{{ $i }}</option>
+                        <option value="2026" selected>2026</option>
+                        @for ($i = 2000; $i <= 2055; $i++) <option value="{{ $i }}">{{ $i }}</option>
                             @endfor
                     </select>
                 </div>
@@ -87,24 +122,24 @@
         </div>
     </div>
 </form>
-
+@endif
 
 <script>
-    $('#search_code').change(function (e) {
-            e.preventDefault();
+$('#search_code').change(function(e) {
+    e.preventDefault();
 
-            $.ajax({
-                type: "GET",
-                url: "{{ route('jamidari.tenant.info.get.ajax') }}",
-                data: {
-                    client_code: $('#search_code').val()
-                },
-                success: function (response) {
-                    $('#amount').val(response.Agg0ne);
-                }
-            });
+    $.ajax({
+        type: "GET",
+        url: "{{ route('jamidari.tenant.info.get.ajax') }}",
+        data: {
+            client_code: $('#search_code').val()
+        },
+        success: function(response) {
+            $('#amount').val(response.Agg0ne);
+        }
+    });
 
-        });
+});
 </script>
 
 @endsection
